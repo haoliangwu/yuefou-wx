@@ -1,0 +1,17 @@
+<style lang="scss">
+
+</style>
+
+<template>
+<view>
+  comps works
+</view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class LocationMap extends wepy.component {}
+</script>
+
+

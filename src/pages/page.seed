@@ -1,0 +1,42 @@
+<style lang="scss">
+
+</style>
+
+<template>
+  <page :isLoading.sync="isLoading">
+    <view slot="body" class="body-wrapper">
+      page works
+    </view>
+  </page>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+import Page from '../../components/layout/page';
+import LoadingMixin from '../../mixins/loading';
+
+export default class SeedPage extends wepy.page {
+  config = {
+    navigationBarTitleText: '菜单'
+  };
+  components = {
+    page: Page
+  };
+
+  mixins = [LoadingMixin];
+
+  data = {
+    recipes: [],
+    withCreateAffix: true
+  };
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  async onLoad() {}
+}
+</script>

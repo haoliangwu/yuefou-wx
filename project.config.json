@@ -1,0 +1,18 @@
+{
+	"description": "yuefou-wx",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wx2cda92ee3465bd45",
+	"projectname": "yuefou-wx",
+	"miniprogramRoot": "./dist",
+	"client": "./dist",
+	"svr": "./server",
+	"qcloudRoot": "./server",
+	"condition": {}
+}
