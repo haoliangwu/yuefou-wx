@@ -50,12 +50,12 @@
 
 <script>
 import wepy from 'wepy';
-import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../components/layout/page';
 
-import { storageUserToken, retrieveUserToken } from '../services/storage';
-import { loginOrSignup } from '../services/user';
+import LoginMixin from '../mixins/login';
+
+import { retrieveUserToken } from '../services/storage';
 
 export default class Index extends wepy.page {
   config = {
@@ -71,15 +71,21 @@ export default class Index extends wepy.page {
     avatarUrl: ''
   };
 
+  mixins = [LoginMixin];
+
   computed = {};
 
-  methods = {};
+  methods = {
+    login() {
+      this.safeLogin(() => {
+        this.redirect();
+      });
+    }
+  };
 
   events = {};
 
-  async onLoad() {}
-
-  async onReady() {
+  async onLoad() {
     const { data } = await retrieveUserToken();
 
     if (data && data.token) {
@@ -92,37 +98,11 @@ export default class Index extends wepy.page {
     }
   }
 
-  login() {
-    qcloud.login({
-      success: async result => {
-        // TODO 调用 graphql-server 注册 或 登录
-        const { token, user } = await loginOrSignup(result);
-
-        result.id = user.id
-
-        storageUserToken({
-          user: result,
-          token: token
-        });
-
-        this.redirect();
-      },
-      fail: err => {
-        if (err) {
-          wx.showModal({
-            title: '发生错误',
-            content: err.message
-          });
-          console.error(err);
-        }
-      }
-    });
-  }
+  async onReady() {}
 
   redirect() {
     wx.switchTab({
       url: '/pages/activity/list'
-      // url: '/pages/recipe/list'
     });
   }
 }

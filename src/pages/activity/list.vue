@@ -65,7 +65,6 @@ export default class ActivityList extends wepy.page {
             case 0:
               wx.navigateTo({
                 url: './attend'
-                // url: './attend?id=cjghb1apv3r9l0120cnkkzjpm'
               });
               break;
             case 1:

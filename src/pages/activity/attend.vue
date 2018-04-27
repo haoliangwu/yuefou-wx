@@ -32,6 +32,8 @@ import wepy from 'wepy';
 import Page from '../../components/layout/page';
 import ActivityCard from '../../components/activity/activity-card';
 
+import LoginMixin from '../../mixins/login';
+
 import { activity, attend } from '../../services/activity';
 
 export default class ActivityAttendPage extends wepy.page {
@@ -51,6 +53,8 @@ export default class ActivityAttendPage extends wepy.page {
 
   computed = {};
 
+  mixins = [LoginMixin];
+
   methods = {
     search(event) {
       this.searchResult = null;
@@ -67,10 +71,13 @@ export default class ActivityAttendPage extends wepy.page {
   async onLoad(options) {
     const { id } = options;
 
+    // 如果有 id 参数则证明当前页面时邀请页面
     if (id) {
-      const result = await activity(id);
+      this.safeLogin(async () => {
+        const result = await activity(id);
 
-      this.attendActivity(result);
+        this.attendActivity(result);
+      });
     }
   }
 
@@ -97,7 +104,11 @@ export default class ActivityAttendPage extends wepy.page {
 
         const attendActivity = await attend(id);
 
-        if (!attendActivity) return;
+        if (!attendActivity) {
+          return setTimeout(() => {
+            this.redirect();
+          }, 1500);
+        }
 
         wx.showModal({
           title: '参加成功',
@@ -105,13 +116,17 @@ export default class ActivityAttendPage extends wepy.page {
           success: ({ cancel }) => {
             if (cancel) return;
 
-            wx.switchTab({
-              url: '/pages/activity/list'
-            });
+            this.redirect();
           }
         });
       }
     });
+  }
+
+  redirect() {
+    const url = '/pages/activity/list';
+
+    wx.switchTab({ url });
   }
 }
 </script>
