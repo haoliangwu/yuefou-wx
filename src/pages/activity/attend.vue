@@ -82,6 +82,8 @@ export default class ActivityAttendPage extends wepy.page {
     if (result) {
       this.searchResult = result;
     }
+
+    this.$apply();
   }
 
   async attendActivity(activity) {

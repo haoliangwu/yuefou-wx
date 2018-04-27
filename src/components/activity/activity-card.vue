@@ -49,7 +49,7 @@
       <span class="minor-text">{{hint}}</span>
       <span class="mi mi-keyboard-arrow-right"></span>
     </header>
-    <header class="sub minor-text">admin 创建于 2018.04.18</header>
+    <header class="sub minor-text">{{activity.creator.name}} 创建于 2018.04.18</header>
     <section class="major-text">{{activity.desc || '这个家伙很懒，什么都没有留下'}}</section>
   </section>
 </view>
