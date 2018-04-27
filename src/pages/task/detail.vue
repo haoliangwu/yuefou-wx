@@ -14,7 +14,6 @@ import wepy from 'wepy';
 // import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../../components/layout/page';
-import LoadingMixin from '../../mixins/loading';
 
 export default class TaskDetail extends wepy.page {
   config = {
@@ -23,8 +22,6 @@ export default class TaskDetail extends wepy.page {
   components = {
     page: Page
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     task: {}
@@ -39,12 +36,10 @@ export default class TaskDetail extends wepy.page {
   async onLoad(option) {
     const { id } = option;
 
-    this.toggleLoading(true);
-
     // TODO 获取真实的 task 实例
     setTimeout(() => {
       this.task.id = id;
-      this.toggleLoading(false);
+      this.$apply();
     }, 1000);
   }
 }

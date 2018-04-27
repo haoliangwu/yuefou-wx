@@ -28,7 +28,6 @@ import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
 import ActivityCard from '../../components/activity/activity-card';
-import LoadingMixin from '../../mixins/loading';
 
 import { activities } from '../../services/activity';
 
@@ -41,8 +40,6 @@ export default class ActivityList extends wepy.page {
     activitycard: ActivityCard
   };
 
-  mixins = [LoadingMixin];
-
   data = {
     activities: [],
     withCreateAffix: true
@@ -51,9 +48,9 @@ export default class ActivityList extends wepy.page {
   computed = {};
 
   methods = {
-    detail(id) {
+    detail(activity) {
       wx.navigateTo({
-        url: `/pages/activity/detail?id=${id}`
+        url: `/pages/activity/detail?id=${activity.id}`
       });
     },
 
@@ -85,18 +82,17 @@ export default class ActivityList extends wepy.page {
   async onLoad() {}
 
   async onShow() {
-    this.fetchActivities()
+    this.fetchActivities();
   }
 
   async onPullDownRefresh() {
-    this.fetchActivities()
-    wx.stopPullDownRefresh()
+    this.fetchActivities();
+    wx.stopPullDownRefresh();
   }
 
   async fetchActivities() {
-    this.toggleLoading(true);
     this.activities = await activities();
-    this.toggleLoading(false);
+    this.$apply();
   }
 }
 </script>

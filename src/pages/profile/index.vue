@@ -43,7 +43,6 @@ import wepy from 'wepy';
 // import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../../components/layout/page';
-import LoadingMixin from '../../mixins/loading';
 
 import { retrieveUserToken } from '../../services/storage';
 
@@ -54,8 +53,6 @@ export default class Profile extends wepy.page {
   components = {
     page: Page
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     user: {}

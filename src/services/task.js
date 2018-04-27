@@ -38,7 +38,7 @@ export function tasks() {
       variables
     },
     type: 'query'
-  }).then(res => res.data.data.tasks)
+  }).then(res => !res.data.data ? null : res.data.data.tasks)
 }
 
 export function updateTaskStatus(activityId, taskId, status) {
@@ -60,7 +60,7 @@ export function updateTaskStatus(activityId, taskId, status) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.updateTaskStatus)
+  }).then(res => !res.data.data ? null : res.data.data.updateTaskStatus)
 }
 
 export function assignTask(activityId, taskId, assigneeId) {
@@ -82,5 +82,5 @@ export function assignTask(activityId, taskId, assigneeId) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.assignTask)
+  }).then(res => !res.data.data ? null : res.data.data.assignTask)
 }

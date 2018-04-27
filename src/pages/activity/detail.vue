@@ -36,6 +36,7 @@
         </span>
         <span class="placeholder"></span>
         <span @tap="delete({{activity}})" wx:if="{{activity.creator.id === user.id}}" class="mi mi-delete-forever warn"></span>
+        <!-- <span @tap="share({{activity}})" class="mi mi-share"></span> -->
       </view>
       <view class="content fx col">
         <view class="content-item fx col">
@@ -107,7 +108,6 @@ import wepy from 'wepy';
 // import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../../components/layout/page';
-import LoadingMixin from '../../mixins/loading';
 
 import { activity, deleteActivity } from '../../services/activity';
 import { retrieveUserToken } from '../../services/storage';
@@ -119,8 +119,6 @@ export default class ActivityDetail extends wepy.page {
   components = {
     page: Page
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     user: null,
@@ -136,6 +134,17 @@ export default class ActivityDetail extends wepy.page {
   computed = {};
 
   methods = {
+    // share(activity) {
+    //   wx.setClipboardData({
+    //     data: activity.id,
+    //     success() {
+    //       wx.showModal({
+    //         title: '分享活动',
+    //         content: '已复制邀请码至粘贴板'
+    //       });
+    //     }
+    //   });
+    // },
     delete(activity) {
       wx.showModal({
         title: '确认要删除该活动吗？',
@@ -143,9 +152,7 @@ export default class ActivityDetail extends wepy.page {
         success: async res => {
           if (res.cancel) return;
 
-          this.toggleLoading(true);
           await deleteActivity(activity.id);
-          this.toggleLoading(false);
 
           wx.showToast({
             title: '操作成功',
@@ -167,8 +174,6 @@ export default class ActivityDetail extends wepy.page {
 
     const { id } = option;
 
-    this.toggleLoading(true);
-
     this.activity = await activity(id);
 
     // format time range
@@ -179,7 +184,24 @@ export default class ActivityDetail extends wepy.page {
       this.activity.endedAt
     ).toLocaleDateString();
 
-    this.toggleLoading(false);
+    this.$apply();
+  }
+
+  onShareAppMessage() {
+    const title = `${this.user.nickName}邀请你参加活动【${
+      this.activity.title
+    }】`;
+    const path = `/pages/activity/attend?id=${this.activity.id}`;
+
+    return {
+      title,
+      path,
+      success() {
+        wx.showToast({
+          title: '邀请成功'
+        });
+      }
+    };
   }
 }
 </script>

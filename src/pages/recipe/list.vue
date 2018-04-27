@@ -27,7 +27,6 @@ import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
 import RecipeCard from '../../components/recipe/recipe-card';
-import LoadingMixin from '../../mixins/loading';
 
 import { recipes } from '../../services/recipe';
 
@@ -39,8 +38,6 @@ export default class RecipeList extends wepy.page {
     page: Page,
     recipecard: RecipeCard
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     recipes: [],
@@ -88,9 +85,8 @@ export default class RecipeList extends wepy.page {
   }
 
   async fetchRecipes() {
-    this.toggleLoading(true);
     this.recipes = await recipes();
-    this.toggleLoading(false);
+    this.$apply();
   }
 }
 </script>

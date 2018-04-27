@@ -33,7 +33,7 @@ export function recipes() {
       variables
     },
     type: 'query'
-  }).then(res => res.data.data.recipes)
+  }).then(res => !res.data.data ? null : res.data.data.recipes)
 }
 
 export function recipe(id) {
@@ -51,7 +51,7 @@ export function recipe(id) {
       variables
     },
     type: 'query'
-  }).then(res => res.data.data.recipe)
+  }).then(res => !res.data.data ? null : res.data.data.recipe)
 }
 
 export function createRecipe(recipe, tagsMeta) {
@@ -69,7 +69,7 @@ export function createRecipe(recipe, tagsMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.createRecipe)
+  }).then(res => !res.data.data ? null : res.data.data.createRecipe)
 }
 
 export function updateRecipe(recipe, tagsMeta) {
@@ -87,7 +87,7 @@ export function updateRecipe(recipe, tagsMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.updateRecipe)
+  }).then(res => !res.data.data ? null : res.data.data.updateRecipe)
 }
 
 export function deleteRecipe(id) {
@@ -105,7 +105,7 @@ export function deleteRecipe(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.deleteRecipe)
+  }).then(res => !res.data.data ? null : res.data.data.deleteRecipe)
 }
 
 export function uploadRecipePicture(id, data) {

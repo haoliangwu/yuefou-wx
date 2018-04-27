@@ -81,7 +81,6 @@
 import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
-import LoadingMixin from '../../mixins/loading';
 
 import { recipe, deleteRecipe } from '../../services/recipe';
 import { retrieveUserToken } from '../../services/storage';
@@ -93,8 +92,6 @@ export default class RecipeDetail extends wepy.page {
   components = {
     page: Page
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     user: null,
@@ -111,9 +108,7 @@ export default class RecipeDetail extends wepy.page {
         success: async res => {
           if (res.cancel) return;
 
-          this.toggleLoading(true);
           await deleteRecipe(recipe.id);
-          this.toggleLoading(false);
 
           wx.showToast({
             title: '操作成功',
@@ -135,15 +130,13 @@ export default class RecipeDetail extends wepy.page {
 
     const { id } = option;
 
-    this.toggleLoading(true);
-
     this.recipe = await recipe(id);
 
     if (this.recipe.avatar) {
       this.recipe.avatar = this.prefixRecipeResource(this.recipe.avatar);
     }
 
-    this.toggleLoading(false);
+    this.$apply();
   }
 
   onShareAppMessage() {

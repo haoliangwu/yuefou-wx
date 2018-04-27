@@ -15,7 +15,7 @@
     <view slot="body" class="body-wrapper">
       <view class="tasks-wrapper">
         <repeat for="{{tasks}}" index="index" item="task">
-          <taskcard @toggleLoading.user="toggleLoading" @tapReqest.user="detail" @reload.user="reload" :task="task" ></taskcard>
+          <taskcard @tapReqest.user="detail" @reload.user="reload" :task="task" ></taskcard>
         </repeat>
       </view>
     </view>
@@ -28,7 +28,6 @@ import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
 import TaskCard from '../../components/task/task-card';
-import LoadingMixin from '../../mixins/loading';
 
 import { tasks } from '../../services/task';
 
@@ -41,8 +40,6 @@ export default class TaskList extends wepy.page {
     taskcard: TaskCard
   };
 
-  mixins = [LoadingMixin];
-
   data = {
     tasks: []
   };
@@ -54,10 +51,6 @@ export default class TaskList extends wepy.page {
       wx.navigateTo({
         url: `/pages/task/detail?id=${id}`
       });
-    },
-
-    toggleLoading(status) {
-      this.toggleLoading(status);
     },
 
     reload: async () => {
@@ -75,13 +68,12 @@ export default class TaskList extends wepy.page {
 
   async onPullDownRefresh() {
     this.fetchTasks();
-    wx.stopPullDownRefresh()
+    wx.stopPullDownRefresh();
   }
 
   async fetchTasks() {
-    this.toggleLoading(true);
     this.tasks = await tasks();
-    this.toggleLoading(false);
+    this.$apply();
   }
 }
 </script>

@@ -6,12 +6,6 @@ export default class LoadingMixin extends wepy.mixin {
   }
 
   events = {
-    'loadingMask:show': () => {
-      this.toggleLoading(true)
-    },
-    'loadingMask:hide': () => {
-      this.toggleLoading(false)
-    }
   }
 
   toggleLoading(status = false) {

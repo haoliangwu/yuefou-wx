@@ -118,7 +118,6 @@ import moment from 'moment';
 
 import Page from '../../components/layout/page';
 import LocationMap from '../../components/activity/location-map';
-import LoadingMixin from '../../mixins/loading';
 
 import { createActivity } from '../../services/activity';
 
@@ -130,8 +129,6 @@ export default class ActivityCreatePage extends wepy.page {
     page: Page,
     locationmap: LocationMap
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     recipes: [],

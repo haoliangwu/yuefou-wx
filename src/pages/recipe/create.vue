@@ -72,7 +72,6 @@ import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
 import CameraPlaceholder from '../../components/layout/camera-placeholder';
-import LoadingMixin from '../../mixins/loading';
 
 import { createRecipe, uploadRecipePicture } from '../../services/recipe';
 
@@ -84,8 +83,6 @@ export default class RecipeCreatePage extends wepy.page {
     page: Page,
     cameraplaceholder: CameraPlaceholder
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     recipe: [],

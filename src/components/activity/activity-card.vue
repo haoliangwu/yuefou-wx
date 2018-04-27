@@ -79,7 +79,7 @@ export default class ActivityCard extends wepy.component {
 
   methods = {
     detail() {
-      this.$emit('tapReqest', this.activity.id);
+      this.$emit('tapReqest', this.activity);
     }
   };
 }

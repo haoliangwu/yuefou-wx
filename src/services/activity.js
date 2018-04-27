@@ -45,7 +45,7 @@ export function activities() {
       variables
     },
     type: 'query'
-  }).then(res => res.data.data.activities)
+  }).then(res => !res.data.data ? null : res.data.data.activities)
 }
 
 export function activity(id) {
@@ -63,7 +63,7 @@ export function activity(id) {
       variables
     },
     type: 'query'
-  }).then(res => res.data.data.activity)
+  }).then(res => !res.data.data ? null : res.data.data.activity)
 }
 
 export function createActivity(activity, tasksMeta, recipesMeta) {
@@ -85,7 +85,7 @@ export function createActivity(activity, tasksMeta, recipesMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.createActivity)
+  }).then(res => !res.data.data ? null : res.data.data.createActivity)
 }
 
 export function attend(id) {
@@ -103,7 +103,7 @@ export function attend(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.attendActivity)
+  }).then(res => !res.data.data ? null : res.data.data.attendActivity)
 }
 
 export function deleteActivity(id) {
@@ -121,5 +121,5 @@ export function deleteActivity(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => res.data.data.deleteActivity)
+  }).then(res => !res.data.data ? null : res.data.data.deleteActivity)
 }

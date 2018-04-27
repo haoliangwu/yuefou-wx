@@ -53,7 +53,6 @@ import wepy from 'wepy';
 import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../components/layout/page';
-import LoadingMixin from '../mixins/loading';
 
 import { storageUserToken, retrieveUserToken } from '../services/storage';
 import { loginOrSignup } from '../services/user';
@@ -65,8 +64,6 @@ export default class Index extends wepy.page {
   components = {
     page: Page
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     logoText: 'YueFou',
@@ -96,12 +93,8 @@ export default class Index extends wepy.page {
   }
 
   login() {
-    this.toggleLoading(true);
-
     qcloud.login({
       success: async result => {
-        this.toggleLoading(false);
-
         // TODO 调用 graphql-server 注册 或 登录
         const { token, user } = await loginOrSignup(result);
 
@@ -122,7 +115,6 @@ export default class Index extends wepy.page {
           });
           console.error(err);
         }
-        this.toggleLoading(false);
       }
     });
   }

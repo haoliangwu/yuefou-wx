@@ -25,7 +25,7 @@ export function appConfig() {
     },
     type: 'query',
     noAuth: true
-  }).then(res => res.data.data.config)
+  }).then(res => !res.data.data ? null : res.data.data.config)
 }
 
 export function cosConfig() {

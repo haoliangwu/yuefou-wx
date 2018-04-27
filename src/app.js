@@ -122,6 +122,11 @@ export default class extends wepy.app {
 
         console.group(p.data)
 
+        wx.showLoading({
+          title: '加载中...',
+          mask: true
+        })
+
         return p;
       },
 
@@ -153,6 +158,7 @@ export default class extends wepy.app {
 
       // 请求完成时的回调函数(请求成功或失败都会被执行)
       complete(p) {
+        wx.hideLoading()
         console.groupEnd()
       }
     });

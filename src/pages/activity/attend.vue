@@ -30,7 +30,6 @@
 import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
-import LoadingMixin from '../../mixins/loading';
 import ActivityCard from '../../components/activity/activity-card';
 
 import { activity, attend } from '../../services/activity';
@@ -43,8 +42,6 @@ export default class ActivityAttendPage extends wepy.page {
     page: Page,
     activitycard: ActivityCard
   };
-
-  mixins = [LoadingMixin];
 
   data = {
     withCreateAffix: true,
@@ -60,38 +57,45 @@ export default class ActivityAttendPage extends wepy.page {
       this.searchAttendActivity(event.detail.value);
     },
 
-    attend(id) {
-      this.attendActivity(id);
+    attend(activity) {
+      this.attendActivity(activity);
     }
   };
 
   events = {};
 
-  async onLoad() {}
+  async onLoad(options) {
+    const { id } = options;
+
+    if (id) {
+      const result = await activity(id);
+
+      this.attendActivity(result);
+    }
+  }
 
   async searchAttendActivity(keyword) {
     if (!keyword) return;
-
-    this.toggleLoading(true);
 
     const result = await activity(keyword);
 
     if (result) {
       this.searchResult = result;
     }
-
-    this.toggleLoading(false);
   }
 
-  async attendActivity(id) {
+  async attendActivity(activity) {
+    const { id, title } = activity;
+
     wx.showModal({
       title: '确认参加活动吗？',
+      content: title,
       success: async res => {
         if (res.cancel) return;
 
-        this.toggleLoading(true);
+        const attendActivity = await attend(id);
 
-        await attend(id);
+        if (!attendActivity) return;
 
         wx.showToast({
           title: '参加成功',
@@ -99,8 +103,6 @@ export default class ActivityAttendPage extends wepy.page {
             wx.navigateBack();
           }
         });
-
-        this.toggleLoading(false);
       }
     });
   }
