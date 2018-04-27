@@ -136,13 +136,7 @@ export default class ActivityDetail extends wepy.page {
   methods = {
     share(activity) {
       wx.setClipboardData({
-        data: activity.id,
-        success() {
-          wx.showModal({
-            title: '分享活动',
-            content: '已复制邀请码至粘贴板'
-          });
-        }
+        data: activity.id
       });
     },
     delete(activity) {

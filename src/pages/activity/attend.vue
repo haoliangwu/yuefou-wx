@@ -97,10 +97,15 @@ export default class ActivityAttendPage extends wepy.page {
 
         if (!attendActivity) return;
 
-        wx.showToast({
+        wx.showModal({
           title: '参加成功',
-          success: () => {
-            wx.navigateBack();
+          content: '是否返回【活动列表】查看',
+          success: ({ cancel }) => {
+            if (cancel) return;
+
+            wx.switchTab({
+              url: '/pages/activity/list'
+            });
           }
         });
       }

@@ -170,6 +170,7 @@ export default class ActivityCreatePage extends wepy.page {
 
       wx.showToast({
         title: '创建成功',
+        content: '可以在活动列表查看',
         success: () => {
           setTimeout(() => this.redirect(), 1000)
         }

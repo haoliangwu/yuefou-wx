@@ -80,7 +80,7 @@ export default class Profile extends wepy.page {
           if (res.cancel) return;
 
           this.clearStorage();
-          wx.navigateTo({
+          wx.redirectTo({
             url: '/pages/index'
           });
         }
