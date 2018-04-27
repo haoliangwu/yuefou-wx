@@ -36,7 +36,7 @@
         </span>
         <span class="placeholder"></span>
         <span @tap="delete({{activity}})" wx:if="{{activity.creator.id === user.id}}" class="mi mi-delete-forever warn"></span>
-        <!-- <span @tap="share({{activity}})" class="mi mi-share"></span> -->
+        <span @tap="share({{activity}})" class="mi mi-share"></span>
       </view>
       <view class="content fx col">
         <view class="content-item fx col">
@@ -134,17 +134,17 @@ export default class ActivityDetail extends wepy.page {
   computed = {};
 
   methods = {
-    // share(activity) {
-    //   wx.setClipboardData({
-    //     data: activity.id,
-    //     success() {
-    //       wx.showModal({
-    //         title: '分享活动',
-    //         content: '已复制邀请码至粘贴板'
-    //       });
-    //     }
-    //   });
-    // },
+    share(activity) {
+      wx.setClipboardData({
+        data: activity.id,
+        success() {
+          wx.showModal({
+            title: '分享活动',
+            content: '已复制邀请码至粘贴板'
+          });
+        }
+      });
+    },
     delete(activity) {
       wx.showModal({
         title: '确认要删除该活动吗？',

@@ -36,7 +36,7 @@ import { activity, attend } from '../../services/activity';
 
 export default class ActivityAttendPage extends wepy.page {
   config = {
-    navigationBarTitleText: '菜单'
+    navigationBarTitleText: '参加活动'
   };
   components = {
     page: Page,
