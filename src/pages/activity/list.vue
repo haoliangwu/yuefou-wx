@@ -33,7 +33,8 @@ import { activities } from '../../services/activity';
 
 export default class ActivityList extends wepy.page {
   config = {
-    navigationBarTitleText: '活动'
+    navigationBarTitleText: '活动',
+    enablePullDownRefresh: true
   };
   components = {
     page: Page,

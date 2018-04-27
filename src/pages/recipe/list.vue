@@ -32,7 +32,8 @@ import { recipes } from '../../services/recipe';
 
 export default class RecipeList extends wepy.page {
   config = {
-    navigationBarTitleText: '菜单'
+    navigationBarTitleText: '菜单',
+    enablePullDownRefresh: true
   };
   components = {
     page: Page,
