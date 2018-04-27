@@ -87,7 +87,8 @@ import { retrieveUserToken } from '../../services/storage';
 
 export default class RecipeDetail extends wepy.page {
   config = {
-    navigationBarTitleText: '菜单详情'
+    navigationBarTitleText: '菜单详情',
+    enablePullDownRefresh: true
   };
   components = {
     page: Page
@@ -130,11 +131,15 @@ export default class RecipeDetail extends wepy.page {
 
     const { id } = option;
 
-    this.recipe = await recipe(id);
+    await this.fetchRecipe(id);
 
-    if (this.recipe.avatar) {
-      this.recipe.avatar = this.prefixRecipeResource(this.recipe.avatar);
-    }
+    this.$apply();
+  }
+
+  async onPullDownRefresh() {
+    await this.fetchRecipe(this.recipe.id);
+
+    wx.stopPullDownRefresh();
 
     this.$apply();
   }
@@ -157,6 +162,14 @@ export default class RecipeDetail extends wepy.page {
     }
 
     return this.$parent.prefixRecipeResource(uri);
+  }
+
+  async fetchRecipe(id) {
+    this.recipe = await recipe(id);
+
+    if (this.recipe.avatar) {
+      this.recipe.avatar = this.prefixRecipeResource(this.recipe.avatar);
+    }
   }
 }
 </script>

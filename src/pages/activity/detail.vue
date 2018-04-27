@@ -114,7 +114,8 @@ import { retrieveUserToken } from '../../services/storage';
 
 export default class ActivityDetail extends wepy.page {
   config = {
-    navigationBarTitleText: '活动详情'
+    navigationBarTitleText: '活动详情',
+    enablePullDownRefresh: true
   };
   components = {
     page: Page
@@ -168,15 +169,15 @@ export default class ActivityDetail extends wepy.page {
 
     const { id } = option;
 
-    this.activity = await activity(id);
+    await this.fetchActivity(id);
 
-    // format time range
-    this.activity.startedAt = new Date(
-      this.activity.startedAt
-    ).toLocaleDateString();
-    this.activity.endedAt = new Date(
-      this.activity.endedAt
-    ).toLocaleDateString();
+    this.$apply();
+  }
+
+  async onPullDownRefresh() {
+    await this.fetchActivity(this.activity.id);
+
+    wx.stopPullDownRefresh();
 
     this.$apply();
   }
@@ -196,6 +197,18 @@ export default class ActivityDetail extends wepy.page {
         });
       }
     };
+  }
+
+  async fetchActivity(id) {
+    this.activity = await activity(id);
+
+    // format time range
+    this.activity.startedAt = new Date(
+      this.activity.startedAt
+    ).toLocaleDateString();
+    this.activity.endedAt = new Date(
+      this.activity.endedAt
+    ).toLocaleDateString();
   }
 }
 </script>
