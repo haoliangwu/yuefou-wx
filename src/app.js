@@ -132,7 +132,9 @@ export default class extends wepy.app {
 
       // 请求成功后的回调函数
       success(p) {
-        wx.hideLoading()
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 500)
         // 可以在这里对收到的响应数据对象进行加工处理
         console.log('request success: ', p);
 
@@ -152,7 +154,9 @@ export default class extends wepy.app {
 
       // 请求失败后的回调函数
       fail(p) {
-        wx.hideLoading()
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 500)
         console.log('request fail: ', p);
         // 必须返回响应数据对象，否则后续无法对响应数据进行处理
         return p;
