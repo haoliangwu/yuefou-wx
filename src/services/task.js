@@ -51,7 +51,7 @@ export function createTask(activityId, task) {
 
   const variables = {
     id: activityId,
-    ...task
+    task
   }
 
   return wepy.request({
