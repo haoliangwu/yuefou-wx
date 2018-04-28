@@ -57,8 +57,8 @@
       <span class="major-text">{{task.name}}</span>
       <span class="minor-text">{{statusMapping[task.status]}}</span>
     </header>
-    <header class="sub minor-text">admin 创建于 2018.04.18</header>
-    <section class="major-text">{{task.desc}}</section>
+    <header class="sub minor-text" wx:if="{{!isEmber}}">{{task.activity.title}}</header>
+    <section class="major-text" wx:if="{{!isEmber}}">{{task.desc}}</section>
     <section class="actions-row fx row">
       <span>当前指派者: {{task.assignee ? task.assignee.name : '无'}}</span>
       <view class="task-actions-wrapper fx row">
@@ -86,10 +86,10 @@ export default class TaskCard extends wepy.component {
     canStop: true,
     canRestore: true,
     statusMapping: {
-      'INIT': '未开始',
-      'PENDING': '进行中',
-      'DONE': '已完成',
-      'STOP': '已终止'
+      INIT: '未开始',
+      PENDING: '进行中',
+      DONE: '已完成',
+      STOP: '已终止'
     }
   };
 
@@ -97,6 +97,10 @@ export default class TaskCard extends wepy.component {
     task: {
       type: Object,
       default: {}
+    },
+    isEmber: {
+      type: Boolean,
+      default: false
     }
   };
 
@@ -144,11 +148,8 @@ export default class TaskCard extends wepy.component {
       if (confirm) {
         const { activity, id } = this.task;
 
-        this.$emit('toggleLoading', true);
+        await updateTaskStatus(activity.id, id, action);
 
-        await updateTaskStatus(activity.id, id, status);
-
-        this.$emit('toggleLoading', false);
         this.$emit('reload');
       }
     });
@@ -175,12 +176,9 @@ export default class TaskCard extends wepy.component {
         const { activity, id } = this.task;
         const assignee = users[res.tapIndex];
 
-        this.$emit('toggleLoading', true);
+        assignTask(activity.id, id, assignee.id).then(res => {});
 
-        assignTask(activity.id, id, assignee.id).then(res => {
-          this.$emit('toggleLoading', false);
-          this.$emit('reload');
-        });
+        this.$emit('reload');
       }
     });
   }

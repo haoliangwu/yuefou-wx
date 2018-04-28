@@ -99,7 +99,7 @@
           </header>
           <section wx:if="{{activity.tasks.length > 0}}" class="fx col">
             <repeat for="{{activity.tasks}}" index="index" item="task">
-              <span>{{task.name}}</span>
+              <taskcard @reload.user="reload" :task.sync="task" :isEmber.sync="isTaskCardEmber"></taskcard>
             </repeat>
           </section>
           <section class="major-text" wx:else>
@@ -116,6 +116,7 @@ import wepy from 'wepy';
 // import qcloud from '../tools/wafer2-client-sdk';
 
 import Page from '../../components/layout/page';
+import TaskCard from '../../components/task/task-card';
 
 import { activity, deleteActivity } from '../../services/activity';
 import { retrieveUserToken } from '../../services/storage';
@@ -127,7 +128,8 @@ export default class ActivityDetail extends wepy.page {
     enablePullDownRefresh: true
   };
   components = {
-    page: Page
+    page: Page,
+    taskcard: TaskCard
   };
 
   data = {
@@ -138,7 +140,8 @@ export default class ActivityDetail extends wepy.page {
       TASK: '任务模式',
       POTLUCK: '百家宴模式'
     },
-    isCreator: true
+    isCreator: true,
+    isTaskCardEmber: true
   };
 
   computed = {};
@@ -171,6 +174,10 @@ export default class ActivityDetail extends wepy.page {
       wx.navigateTo({
         url: `/pages/task/create?activityId=${this.activity.id}`
       });
+    },
+    async reload() {
+      await this.fetchActivity(this.activity.id)
+      this.$apply();
     }
   };
 

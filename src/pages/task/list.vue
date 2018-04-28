@@ -30,6 +30,7 @@ import Page from '../../components/layout/page';
 import TaskCard from '../../components/task/task-card';
 
 import { tasks } from '../../services/task';
+// import { formatUTCDateStr } from '../../services/utils';
 
 export default class TaskList extends wepy.page {
   config = {
@@ -54,7 +55,8 @@ export default class TaskList extends wepy.page {
     },
 
     reload: async () => {
-      this.fetch();
+      await this.fetchTasks();
+      this.$apply();
     }
   };
 
@@ -63,17 +65,23 @@ export default class TaskList extends wepy.page {
   async onLoad() {}
 
   async onShow() {
-    this.fetchTasks();
+    await this.fetchTasks();
+    this.$apply();
   }
 
   async onPullDownRefresh() {
-    this.fetchTasks();
+    await this.fetchTasks();
     wx.stopPullDownRefresh();
+    this.$apply();
   }
 
   async fetchTasks() {
     this.tasks = await tasks();
-    this.$apply();
+
+    // this.tasks = this.tasks.map(task => {
+    //   task.createdAt = formatUTCDateStr(task.createdAt)
+    //   return task
+    // })
   }
 }
 </script>
