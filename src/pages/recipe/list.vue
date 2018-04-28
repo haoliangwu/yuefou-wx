@@ -11,7 +11,7 @@
 }
 </style>
 <template>
-  <page @affixTapRequest.user="affixTap" :withCreateAffix.sync="withCreateAffix" :isLoading.sync="isLoading">
+  <page @affixTapRequest.user="affixTap" :withCreateAffix.sync="withCreateAffix" >
     <view slot="body" class="body-wrapper">
       <view class="recipes-wrapper">
         <repeat for="{{recipes}}" index="index" item="recipe">

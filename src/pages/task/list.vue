@@ -11,7 +11,7 @@
 }
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper">
       <view class="tasks-wrapper">
         <repeat for="{{tasks}}" index="index" item="task">

@@ -2,6 +2,7 @@ import wepy from 'wepy';
 import gql from 'graphql-tag';
 import { TaskFragment } from './task';
 import { RecipeFragment } from './recipe';
+import { safePluckQueryResult } from './utils';
 
 // fragment
 export const ActivityFragment = `fragment ActivityFragment on Activity {
@@ -13,6 +14,7 @@ export const ActivityFragment = `fragment ActivityFragment on Activity {
   location
   startedAt
   endedAt
+  createdAt
   creator {
     id
     name
@@ -45,7 +47,7 @@ export function activities() {
       variables
     },
     type: 'query'
-  }).then(res => !res.data.data ? null : res.data.data.activities)
+  }).then(safePluckQueryResult('activities'))
 }
 
 export function activity(id) {
@@ -63,7 +65,7 @@ export function activity(id) {
       variables
     },
     type: 'query'
-  }).then(res => !res.data.data ? null : res.data.data.activity)
+  }).then(safePluckQueryResult('activity'))
 }
 
 export function createActivity(activity, tasksMeta, recipesMeta) {
@@ -85,7 +87,7 @@ export function createActivity(activity, tasksMeta, recipesMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.createActivity)
+  }).then(safePluckQueryResult('createActivity'))
 }
 
 export function attend(id) {
@@ -103,7 +105,7 @@ export function attend(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.attendActivity)
+  }).then(safePluckQueryResult('attendActivity'))
 }
 
 export function deleteActivity(id) {
@@ -121,5 +123,5 @@ export function deleteActivity(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.deleteActivity)
+  }).then(safePluckQueryResult('deleteActivity'))
 }

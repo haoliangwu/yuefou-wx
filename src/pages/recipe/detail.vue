@@ -29,7 +29,7 @@
 }
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper">
       <view class="title fx col sc">
         <header class="fx row sc" style="width: 100%;">

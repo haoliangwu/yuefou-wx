@@ -13,7 +13,7 @@
 </style>
 
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper">
       <view class="input-wrapper fx row sc">
         <input type="text" placeholder="输入活动邀请码..." confirm-type="搜索" @confirm="search"/>

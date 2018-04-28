@@ -22,10 +22,11 @@
 }
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper fx col">
         <view class="item-wrapper fx row sc" @tap="getAddress">
           <image class="avatar" src="{{user.avatarUrl}}"></image>
+          <span class="minor-text">{{user.nickName}}</span>
           <span class="placeholder"></span>
           <span class="minor-text">常用地址</span>
           <span class="mi mi-keyboard-arrow-right"></span>

@@ -24,6 +24,7 @@ export default class extends wepy.app {
       // 任务
       'pages/task/list',
       'pages/task/detail',
+      'pages/task/create',
       // 菜单
       'pages/recipe/list',
       'pages/recipe/create',

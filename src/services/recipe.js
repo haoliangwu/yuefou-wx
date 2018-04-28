@@ -1,4 +1,5 @@
 import wepy from 'wepy';
+import { safePluckQueryResult } from './utils';
 
 import { TagFragment } from './tag';
 import { UserFragment } from './user';
@@ -33,7 +34,7 @@ export function recipes() {
       variables
     },
     type: 'query'
-  }).then(res => !res.data.data ? null : res.data.data.recipes)
+  }).then(safePluckQueryResult('recipes'))
 }
 
 export function recipe(id) {
@@ -51,7 +52,7 @@ export function recipe(id) {
       variables
     },
     type: 'query'
-  }).then(res => !res.data.data ? null : res.data.data.recipe)
+  }).then(safePluckQueryResult('recipe'))
 }
 
 export function createRecipe(recipe, tagsMeta) {
@@ -69,7 +70,7 @@ export function createRecipe(recipe, tagsMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.createRecipe)
+  }).then(safePluckQueryResult('createRecipe'))
 }
 
 export function updateRecipe(recipe, tagsMeta) {
@@ -87,7 +88,7 @@ export function updateRecipe(recipe, tagsMeta) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.updateRecipe)
+  }).then(safePluckQueryResult('updateRecipe'))
 }
 
 export function deleteRecipe(id) {
@@ -105,7 +106,7 @@ export function deleteRecipe(id) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.deleteRecipe)
+  }).then(safePluckQueryResult('deleteRecipe'))
 }
 
 export function uploadRecipePicture(id, data) {

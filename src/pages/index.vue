@@ -34,7 +34,7 @@
 }
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body">
       <view class="app-logo">
         <text class="info">{{logoText}}</text>
@@ -104,6 +104,9 @@ export default class Index extends wepy.page {
     wx.switchTab({
       url: '/pages/activity/list'
     });
+    // wx.redirectTo({
+    //   url: '/pages/task/create'
+    // })
   }
 }
 </script>

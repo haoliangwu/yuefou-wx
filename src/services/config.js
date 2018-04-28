@@ -1,4 +1,5 @@
 import wepy from 'wepy';
+import { safePluckQueryResult } from './utils';
 
 // fragment
 export const CosConfigFragment = `fragment CosConfigFragment on CosConfig {
@@ -25,7 +26,7 @@ export function appConfig() {
     },
     type: 'query',
     noAuth: true
-  }).then(res => !res.data.data ? null : res.data.data.config)
+  }).then(safePluckQueryResult('config'))
 }
 
 export function cosConfig() {

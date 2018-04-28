@@ -26,7 +26,7 @@
 </style>
 
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper">
       <form @submit="submit" @reset="reset">
       <cameraplaceholder :url.sync="url" @takePhoto.user="takePhoto"></cameraplaceholder>

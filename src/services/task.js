@@ -1,4 +1,5 @@
 import wepy from 'wepy';
+import { safePluckQueryResult } from './utils';
 
 // fragment
 export const TaskFragment = `fragment TaskFragment on ActivityTask {
@@ -38,7 +39,28 @@ export function tasks() {
       variables
     },
     type: 'query'
-  }).then(res => !res.data.data ? null : res.data.data.tasks)
+  }).then(safePluckQueryResult('tasks'))
+}
+
+export function createTask(activityId, task) {
+  const mutation = `mutation createTask($id: ID!, $task: CreateTaskInput!) {
+    createTask(task: $task, id: $id) {
+      ...TaskFragment
+    }
+  } ${TaskFragment}`
+
+  const variables = {
+    id: activityId,
+    ...task
+  }
+
+  return wepy.request({
+    data: {
+      mutation,
+      variables
+    },
+    type: 'mutation'
+  }).then(safePluckQueryResult('updateTaskStatus'))
 }
 
 export function updateTaskStatus(activityId, taskId, status) {
@@ -60,7 +82,7 @@ export function updateTaskStatus(activityId, taskId, status) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.updateTaskStatus)
+  }).then(safePluckQueryResult('updateTaskStatus'))
 }
 
 export function assignTask(activityId, taskId, assigneeId) {
@@ -82,5 +104,5 @@ export function assignTask(activityId, taskId, assigneeId) {
       variables
     },
     type: 'mutation'
-  }).then(res => !res.data.data ? null : res.data.data.assignTask)
+  }).then(safePluckQueryResult('assignTask'))
 }

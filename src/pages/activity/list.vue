@@ -11,7 +11,7 @@
 }
 </style>
 <template>
-  <page @affixTapRequest.user="affixTap" :withCreateAffix.sync="withCreateAffix" :isLoading.sync="isLoading">
+  <page @affixTapRequest.user="affixTap" :withCreateAffix.sync="withCreateAffix" >
     <view slot="body" class="body-wrapper">
       <view class="activities-wrapper">
         <repeat for="{{activities}}" index="index" item="activity">
@@ -30,6 +30,7 @@ import Page from '../../components/layout/page';
 import ActivityCard from '../../components/activity/activity-card';
 
 import { activities } from '../../services/activity';
+import { formatUTCDateStr } from '../../services/utils';
 
 export default class ActivityList extends wepy.page {
   config = {
@@ -93,6 +94,13 @@ export default class ActivityList extends wepy.page {
 
   async fetchActivities() {
     this.activities = await activities();
+
+    this.activities = this.activities.map(activity => {
+      activity.createdAt = formatUTCDateStr(activity.createdAt)
+
+      return activity
+    });
+
     this.$apply();
   }
 }

@@ -50,12 +50,12 @@
   <view class="container">
     <slot name="body">页面内容</slot>
 
-    <view wx:if="{{isLoading}}" class="loading-mask">
+    <!-- <view wx:if="{{isLoading}}" class="loading-mask">
       <view class="loading-spinner-wrapper">
         <image class="loading-spinner" src="/images/ripple_spinner.svg"></image>
         <text class="loading-spinner-text">加载中...</text>
       </view>
-    </view>
+    </view> -->
     <view @tap="affixTap" wx:if="{{withCreateAffix}}" class="affix-wrapper shadow">
       <span class="mi mi-playlist-add x24"></span>
     </view>
@@ -78,11 +78,11 @@ export default class Page extends wepy.component {
     withCreateAffix: {
       type: Boolean,
       default: false
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
     }
+    // isLoading: {
+    //   type: Boolean,
+    //   default: false
+    // }
   };
 
   methods = {

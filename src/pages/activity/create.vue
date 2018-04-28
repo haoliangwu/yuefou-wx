@@ -1,31 +1,8 @@
 <style lang="scss">
-.content,
-.title {
-  background: #fff;
-  padding: 0.5em 0.75em;
-  margin: 0.5em 0;
-}
-.title {
-  height: 2em;
-  span.minor-text {
-    font-size: 14px;
-  }
-}
-.content {
-  .content-item {
-    margin: 0.5em 0;
-    header {
-      font-size: 14px;
-      margin: 0 0 0.25em 0;
-    }
-    section {
-      font-size: 12px;
-    }
-  }
-}
+
 </style>
 <template>
-<page :isLoading.sync="isLoading">
+<page >
   <view slot="body" class="body-wrapper">
       <form @submit="submit" @reset="reset">
       <view class="title fx row sc">

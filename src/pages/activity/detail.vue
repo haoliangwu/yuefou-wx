@@ -25,7 +25,7 @@
 }
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body" class="body-wrapper">
       <view class="title fx row sc">
         <span class="major-text">
@@ -77,7 +77,11 @@
           </section>
         </view>
         <view class="content-item fx col" wx:if="{{activity.type === 'HOST'}}">
-          <header class="minor-text">菜单</header>
+          <header class="minor-text">
+            <span class="placeholder">菜单</span>
+            <span>绑定菜单</span>
+            <span class="mi mi-keyboard-arrow-right"></span>
+          </header>
           <section wx:if="{{activity.recipes.length > 0}}" class="fx col">
             <repeat for="{{activity.recipes}}" index="index" item="recipe">
               <span>{{recipe.name}}</span>
@@ -88,7 +92,11 @@
           </section>
         </view>
         <view class="content-item fx col" wx:if="{{activity.type === 'TASK'}}">
-          <header class="minor-text">任务</header>
+          <header class="minor-text fx row sc">
+            <span class="placeholder">任务</span>
+            <span @tap="createTask">创建任务</span>
+            <span class="mi mi-keyboard-arrow-right"></span>
+          </header>
           <section wx:if="{{activity.tasks.length > 0}}" class="fx col">
             <repeat for="{{activity.tasks}}" index="index" item="task">
               <span>{{task.name}}</span>
@@ -111,6 +119,7 @@ import Page from '../../components/layout/page';
 
 import { activity, deleteActivity } from '../../services/activity';
 import { retrieveUserToken } from '../../services/storage';
+import { formatUTCDateStr } from '../../services/utils';
 
 export default class ActivityDetail extends wepy.page {
   config = {
@@ -123,7 +132,7 @@ export default class ActivityDetail extends wepy.page {
 
   data = {
     user: null,
-    activity: {},
+    activity: null,
     type: {
       HOST: '招待模式',
       TASK: '任务模式',
@@ -157,6 +166,11 @@ export default class ActivityDetail extends wepy.page {
           });
         }
       });
+    },
+    createTask() {
+      wx.navigateTo({
+        url: `/pages/task/create?activityId=${this.activity.id}`
+      });
     }
   };
 
@@ -170,6 +184,14 @@ export default class ActivityDetail extends wepy.page {
     const { id } = option;
 
     await this.fetchActivity(id);
+
+    this.$apply();
+  }
+
+  async onShow() {
+    if (!this.activity) return;
+
+    await this.fetchActivity(this.activity.id);
 
     this.$apply();
   }
@@ -203,12 +225,8 @@ export default class ActivityDetail extends wepy.page {
     this.activity = await activity(id);
 
     // format time range
-    this.activity.startedAt = new Date(
-      this.activity.startedAt
-    ).toLocaleDateString();
-    this.activity.endedAt = new Date(
-      this.activity.endedAt
-    ).toLocaleDateString();
+    this.activity.startedAt = formatUTCDateStr(this.activity.startedAt);
+    this.activity.endedAt = formatUTCDateStr(this.activity.endedAt);
   }
 }
 </script>

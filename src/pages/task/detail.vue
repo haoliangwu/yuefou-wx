@@ -2,7 +2,7 @@
 
 </style>
 <template>
-  <page :isLoading.sync="isLoading">
+  <page >
     <view slot="body">
       task detail {{task.id}} works
     </view>
