@@ -97,6 +97,9 @@ import Page from '../../components/layout/page';
 import LocationMap from '../../components/activity/location-map';
 
 import { createActivity } from '../../services/activity';
+import { validateDateRange } from '../../services/utils';
+
+import FormMixin from '../../mixins/form';
 
 export default class ActivityCreatePage extends wepy.page {
   config = {
@@ -124,13 +127,15 @@ export default class ActivityCreatePage extends wepy.page {
     marker: null
   };
 
+  mixins = [FormMixin];
+
   computed = {};
 
   methods = {
     async submit(event) {
       const form = { ...event.detail.value, location: this.location };
 
-      if (this.requireFieldValidate(form)) {
+      if (this.validate(form)) {
         return;
       }
 
@@ -145,13 +150,7 @@ export default class ActivityCreatePage extends wepy.page {
 
       await createActivity(activity);
 
-      wx.showToast({
-        title: '创建成功',
-        content: '可以在活动列表查看',
-        success: () => {
-          setTimeout(() => this.redirect(), 1000)
-        }
-      });
+      this.createdSuccess()
     },
 
     reset() {
@@ -166,7 +165,7 @@ export default class ActivityCreatePage extends wepy.page {
       const temp = this.startDate;
       this.startDate = event.detail.value;
 
-      if (this.dateRangeValidate()) {
+      if (validateDateRange(this.startDate, this.endDate, 'YYYY-MM-DD')) {
         this.startDate = temp;
       }
     },
@@ -175,7 +174,7 @@ export default class ActivityCreatePage extends wepy.page {
       const temp = this.endDate;
       this.endDate = event.detail.value;
 
-      if (this.dateRangeValidate()) {
+      if (validateDateRange(this.startDate, this.endDate, 'YYYY-MM-DD')) {
         this.endDate = temp;
       }
     },
@@ -192,46 +191,15 @@ export default class ActivityCreatePage extends wepy.page {
 
   events = {};
 
-  async onLoad() {
-    // const today = moment();
-    // this.range = {
-    //   start: today.format('YYYY-MM-DD'),
-    //   end: today.add('1', 'y').format('YYYY-MM-DD')
-    // };
-  }
+  async onLoad() {}
 
-  redirect() {
-    wx.navigateBack();
-  }
-
-  dateRangeValidate() {
-    if (!this.startDate || !this.endDate) {
-      return false;
-    }
-
-    const start = moment(this.startDate, 'YYYY-MM-DD');
-    const end = moment(this.endDate, 'YYYY-MM-DD');
-
-    if (start.isAfter(end)) {
-      wx.showToast({
-        title: '非法的活动时间'
-      });
-      return true;
-    }
-
-    return false;
-  }
-
-  requireFieldValidate(values) {
-    if (values.title && values.startDate && values.endDate && values.location) {
-      return false;
-    }
-
-    wx.showToast({
-      title: '存在未填必填项'
-    });
-
-    return true;
+  validate(values) {
+    return this.requireFieldsValidate(values, [
+      'title',
+      'startDate',
+      'endDate',
+      'location'
+    ]);
   }
 }
 </script>

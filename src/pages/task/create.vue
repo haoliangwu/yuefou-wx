@@ -45,6 +45,8 @@ import Page from '../../components/layout/page';
 import { activity } from '../../services/activity';
 import { createTask } from '../../services/task';
 
+import FormMixin from '../../mixins/form';
+
 export default class SeedPage extends wepy.page {
   config = {
     navigationBarTitleText: '创建新任务'
@@ -60,11 +62,13 @@ export default class SeedPage extends wepy.page {
 
   computed = {};
 
+  mixins = [FormMixin];
+
   methods = {
     async submit(event) {
       const form = { ...event.detail.value, location: this.location };
 
-      if (this.requireFieldValidate(form)) {
+      if (this.validate(form)) {
         return;
       }
 
@@ -74,12 +78,7 @@ export default class SeedPage extends wepy.page {
 
       await createTask(this.activityId, task);
 
-      wx.showToast({
-        title: '创建成功',
-        success: () => {
-          setTimeout(() => this.redirect(), 1000);
-        }
-      });
+      this.createdSuccess()
     },
 
     reset() {
@@ -97,23 +96,11 @@ export default class SeedPage extends wepy.page {
 
     this.activity = await activity(activityId);
 
-    this.$apply()
+    this.$apply();
   }
 
-  requireFieldValidate(values) {
-    if (values.name) {
-      return false;
-    }
-
-    wx.showToast({
-      title: '存在未填必填项'
-    });
-
-    return true;
-  }
-
-  redirect() {
-    wx.navigateBack();
+  validate(values) {
+    return this.requireFieldsValidate(values, ['name'])
   }
 }
 </script>

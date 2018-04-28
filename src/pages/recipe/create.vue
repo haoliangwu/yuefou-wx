@@ -75,6 +75,8 @@ import CameraPlaceholder from '../../components/layout/camera-placeholder';
 
 import { createRecipe, uploadRecipePicture } from '../../services/recipe';
 
+import FormMixin from '../../mixins/form';
+
 export default class RecipeCreatePage extends wepy.page {
   config = {
     navigationBarTitleText: '菜单'
@@ -96,11 +98,13 @@ export default class RecipeCreatePage extends wepy.page {
 
   computed = {};
 
+  mixins = [FormMixin];
+
   methods = {
     async submit(event) {
       const form = { ...event.detail.value, location: this.location };
 
-      if (this.requireFieldValidate(form)) {
+      if (this.validate(form)) {
         return;
       }
 
@@ -120,20 +124,20 @@ export default class RecipeCreatePage extends wepy.page {
           success: function(res) {
             const data = JSON.parse(res.data).data;
             // TODO 调用 graphql 接口更新 recipe avatar 的属性
-            uploadRecipePicture(instance.id, data)
+            uploadRecipePicture(instance.id, data);
           }
         });
       }
 
-      wx.showToast({
-        title: '创建成功',
-        success: () => {
-          setTimeout(() => this.redirect(), 1000);
-        }
-      });
+      this.createdSuccess()
     },
 
-    reset() {},
+    reset() {
+      this.name = ''
+      this.desc = ''
+      this.time = 0
+      this.url = ''
+    },
 
     slideChange(event) {
       this.time = event.detail.value * 2;
@@ -148,20 +152,8 @@ export default class RecipeCreatePage extends wepy.page {
 
   async onLoad() {}
 
-  redirect() {
-    wx.navigateBack();
-  }
-
-  requireFieldValidate(values) {
-    if (values.name && values.time) {
-      return false;
-    }
-
-    wx.showToast({
-      title: '存在未填必填项'
-    });
-
-    return true;
+  validate(values) {
+    return this.requireFieldsValidate(values, ['name', 'time']);
   }
 }
 </script>
