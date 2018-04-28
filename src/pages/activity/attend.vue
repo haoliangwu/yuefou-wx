@@ -76,7 +76,7 @@ export default class ActivityAttendPage extends wepy.page {
       this.safeLogin(async () => {
         const result = await activity(id);
 
-        this.attendActivity(result);
+        this.attendActivity(result, true);
       });
     }
   }
@@ -93,7 +93,7 @@ export default class ActivityAttendPage extends wepy.page {
     this.$apply();
   }
 
-  async attendActivity(activity) {
+  async attendActivity(activity, isInviteMode = false) {
     const { id, title } = activity;
 
     wx.showModal({
@@ -107,14 +107,14 @@ export default class ActivityAttendPage extends wepy.page {
         if (!attendActivity) {
           return setTimeout(() => {
             this.redirect();
-          }, 1500);
+          }, 1000);
         }
 
         wx.showModal({
           title: '参加成功',
           content: '是否返回【活动列表】查看',
           success: ({ cancel }) => {
-            if (cancel) return;
+            if (cancel && !isInviteMode) return;
 
             this.redirect();
           }
