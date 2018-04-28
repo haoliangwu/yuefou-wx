@@ -1,6 +1,10 @@
 import wepy from 'wepy'
 
 export default class FormMixin extends wepy.mixin {
+  data = {
+    formCache: {}
+  }
+
   requireFieldsValidate(values = {}, fields = []) {
     try {
       fields.forEach(field => {
@@ -17,18 +21,18 @@ export default class FormMixin extends wepy.mixin {
     }
   }
 
-  createdSuccess() {
+  createdSuccess(msg) {
     wx.showToast({
-      title: '创建成功',
+      title: msg || '创建成功',
       success: () => {
         setTimeout(() => this.redirect(), 1000);
       }
     });
   }
 
-  updatedSuccess() {
+  updatedSuccess(msg) {
     wx.showToast({
-      title: '编辑成功',
+      title: msg || '编辑成功',
       success: () => {
         setTimeout(() => this.redirect(), 1000);
       }
@@ -37,5 +41,13 @@ export default class FormMixin extends wepy.mixin {
 
   redirect() {
     wx.navigateBack();
+  }
+
+  backup(key, value) {
+    this.formCache[key] = JSON.stringify(value)
+  }
+
+  fallback(key) {
+    return JSON.parse(this.formCache[key])
   }
 }

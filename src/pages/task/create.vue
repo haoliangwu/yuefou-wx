@@ -47,7 +47,7 @@ import { createTask } from '../../services/task';
 
 import FormMixin from '../../mixins/form';
 
-export default class SeedPage extends wepy.page {
+export default class CreateTaskPage extends wepy.page {
   config = {
     navigationBarTitleText: '创建新任务'
   };

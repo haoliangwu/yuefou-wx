@@ -105,7 +105,7 @@ export default class Index extends wepy.page {
       url: '/pages/activity/list'
     });
     // wx.redirectTo({
-    //   url: '/pages/task/create'
+    //   url: '/pages/recipe/bind-recipe?activityId=cjfrkacjf1b8s0120m81hfy6v'
     // })
   }
 }

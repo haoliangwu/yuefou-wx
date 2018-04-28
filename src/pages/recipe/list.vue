@@ -3,11 +3,6 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
-
-  // activitycard {
-  //   flex: 1;
-  //   width: 100%;
-  // }
 }
 </style>
 <template>
@@ -77,17 +72,20 @@ export default class RecipeList extends wepy.page {
   async onLoad() {}
 
   async onShow() {
-    this.fetchRecipes();
+    await this.fetchRecipes();
+
+    this.$apply();
   }
 
   async onPullDownRefresh() {
-    this.fetchRecipes();
+    await this.fetchRecipes();
     wx.stopPullDownRefresh();
+
+    this.$apply();
   }
 
   async fetchRecipes() {
     this.recipes = await recipes();
-    this.$apply();
   }
 }
 </script>

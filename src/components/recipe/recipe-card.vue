@@ -6,6 +6,9 @@
 }
 .card-content {
   padding: 0.5em;
+  &.ember {
+    padding: 0 0.5em;
+  }
   header {
     flex: 1;
     &.main {
@@ -47,14 +50,19 @@
 </style>
 <template>
 <view @tap="detail" class="card-wrapper" hover-class="hover">
-  <section class="card-content fx col">
+  <section class="card-content fx col" wx:if="{{!isEmber}}">
       <header class="main fx row">
         <span class="major-text">{{recipe.name}}</span>
         <span class="minor-text">菜单详情</span>
         <span class="mi mi-keyboard-arrow-right"></span>
       </header>
       <header class="sub minor-text">by {{recipe.creator.name}}</header>
-    <section class="major-text">{{recipe.desc}}</section>
+      <section class="major-text">{{recipe.desc}}</section>
+  </section>
+  <section class="card-content fx col ember" wx:else>
+      <header class="main fx row">
+        <span class="major-text">{{recipe.name}}</span>
+      </header>
   </section>
 </view>
 </template>
@@ -72,7 +80,14 @@ export default class RecipeCard extends wepy.component {
   };
 
   props = {
-    recipe: {}
+    recipe: {
+      type: Object,
+      default: null
+    },
+    isEmber: {
+      type: Boolean,
+      default: false
+    }
   };
 
   methods = {

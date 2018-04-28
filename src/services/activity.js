@@ -90,6 +90,28 @@ export function createActivity(activity, tasksMeta, recipesMeta) {
   }).then(safePluckQueryResult('createActivity'))
 }
 
+export function updateActivity(activity, tasksMeta, recipesMeta) {
+  const mutation = `mutation updateActivity($activity: UpdateActivityInput!, $tasksMeta: TasksMetaInput, $recipesMeta: RecipesMetaInput) {
+    updateActivity(activity: $activity, tasksMeta: $tasksMeta, recipesMeta: $recipesMeta) {
+      ...ActivityFragment
+    }
+  } ${ActivityFragment}`
+
+  const variables = {
+    activity,
+    tasksMeta,
+    recipesMeta
+  }
+
+  return wepy.request({
+    data: {
+      mutation,
+      variables
+    },
+    type: 'mutation'
+  }).then(safePluckQueryResult('updateActivity'))
+}
+
 export function attend(id) {
   const mutation = `mutation attendActivity($id: ID!) {
     attendActivity(id: $id) {

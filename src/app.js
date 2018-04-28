@@ -29,6 +29,7 @@ export default class extends wepy.app {
       'pages/recipe/list',
       'pages/recipe/create',
       'pages/recipe/detail',
+      'pages/recipe/bind-recipe',
       // 我的
       'pages/profile/index'
     ],

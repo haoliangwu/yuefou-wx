@@ -77,14 +77,16 @@
           </section>
         </view>
         <view class="content-item fx col" wx:if="{{activity.type === 'HOST'}}">
-          <header class="minor-text">
+          <header class="minor-text fx row sc">
             <span class="placeholder">菜单</span>
-            <span>绑定菜单</span>
-            <span class="mi mi-keyboard-arrow-right"></span>
+            <block wx:if="{{activity.creator.id === user.id}}">
+              <span @tap="bindRecipes">绑定菜单</span>
+              <span class="mi mi-keyboard-arrow-right"></span>
+            </block>
           </header>
           <section wx:if="{{activity.recipes.length > 0}}" class="fx col">
             <repeat for="{{activity.recipes}}" index="index" item="recipe">
-              <span>{{recipe.name}}</span>
+              <recipecard :recipe.sync="recipe" :isEmber.sync="isEmber"></recipecard>
             </repeat>
           </section>
           <section class="major-text" wx:else>
@@ -94,12 +96,14 @@
         <view class="content-item fx col" wx:if="{{activity.type === 'TASK'}}">
           <header class="minor-text fx row sc">
             <span class="placeholder">任务</span>
-            <span @tap="createTask">创建任务</span>
-            <span class="mi mi-keyboard-arrow-right"></span>
+            <block wx:if="{{activity.creator.id === user.id}}">
+              <span @tap="createTask">创建任务</span>
+              <span class="mi mi-keyboard-arrow-right"></span>
+            </block>
           </header>
           <section wx:if="{{activity.tasks.length > 0}}" class="fx col">
             <repeat for="{{activity.tasks}}" index="index" item="task">
-              <taskcard @reload.user="reload" :task.sync="task" :isEmber.sync="isTaskCardEmber"></taskcard>
+              <taskcard @reload.user="reload" :task.sync="task" :isEmber.sync="isEmber"></taskcard>
             </repeat>
           </section>
           <section class="major-text" wx:else>
@@ -117,6 +121,7 @@ import wepy from 'wepy';
 
 import Page from '../../components/layout/page';
 import TaskCard from '../../components/task/task-card';
+import RecipeCard from '../../components/recipe/recipe-card';
 
 import { activity, deleteActivity } from '../../services/activity';
 import { retrieveUserToken } from '../../services/storage';
@@ -129,7 +134,8 @@ export default class ActivityDetail extends wepy.page {
   };
   components = {
     page: Page,
-    taskcard: TaskCard
+    taskcard: TaskCard,
+    recipecard: RecipeCard
   };
 
   data = {
@@ -141,7 +147,7 @@ export default class ActivityDetail extends wepy.page {
       POTLUCK: '百家宴模式'
     },
     isCreator: true,
-    isTaskCardEmber: true
+    isEmber: true
   };
 
   computed = {};
@@ -175,8 +181,13 @@ export default class ActivityDetail extends wepy.page {
         url: `/pages/task/create?activityId=${this.activity.id}`
       });
     },
+    bindRecipes() {
+      wx.navigateTo({
+        url: `/pages/recipe/bind-recipe?activityId=${this.activity.id}`
+      });
+    },
     async reload() {
-      await this.fetchActivity(this.activity.id)
+      await this.fetchActivity(this.activity.id);
       this.$apply();
     }
   };
