@@ -19,7 +19,7 @@
         <view class="content-item fx col">
           <header class="minor-text">活动类型</header>
           <section class="major-text">
-            <radio-group name="type" class="radio-group">
+            <radio-group wx:if="{{!isReset}}" name="type" class="radio-group">
               <label class="radio">
                 <radio value="HOST" checked="{{type === 'HOST'}}" />招待
               </label>
@@ -113,9 +113,10 @@ export default class ActivityCreatePage extends wepy.page {
   data = {
     recipes: [],
     withCreateAffix: true,
+    isReset: false,
     // vm
     title: '',
-    type: '',
+    type: 'HOST',
     range: {
       start: '',
       end: ''
@@ -154,11 +155,17 @@ export default class ActivityCreatePage extends wepy.page {
     },
 
     reset() {
+      // HACK 想重置必选先迫使重新渲染
+      this.isReset = true
+      this.$apply()
+
       this.title = '';
-      this.type = '';
+      this.type = 'HOST';
       this.desc = '';
       this.startDate = null;
       this.endDate = null;
+
+      this.isReset = false
     },
 
     startDateChange(event) {

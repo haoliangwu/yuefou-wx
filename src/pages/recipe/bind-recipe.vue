@@ -103,8 +103,14 @@ export default class BindRecipePage extends wepy.page {
       this.updatedSuccess('绑定成功');
     },
     reset() {
+      // HACK 想重置必选先迫使重新渲染
+      this.recipes = []
+      this.$apply()
+
       this.recipes = this.fallback('recipes');
-      this.selectedCount = 0
+      this.selectedCount = this.activity.recipes.length;
+
+      this.$apply()
     },
     selectRecipe(event) {
       this.selectedCount = event.detail.value.length;
