@@ -55,7 +55,13 @@ import Page from '../components/layout/page';
 
 import LoginMixin from '../mixins/login';
 
-import { retrieveUserToken } from '../services/storage';
+import { getAccessToken } from '../services/template_msg';
+
+import {
+  retrieveUserToken,
+  retrieveTemplateMsgToken,
+  storageTemplateMsgToken
+} from '../services/storage';
 
 export default class Index extends wepy.page {
   config = {
@@ -86,6 +92,12 @@ export default class Index extends wepy.page {
   events = {};
 
   async onLoad() {
+    const { data: templateMsgToken } = await retrieveTemplateMsgToken();
+
+    if (!templateMsgToken) {
+      await this.fetchTemplateMsgToken();
+    }
+
     const { data } = await retrieveUserToken();
 
     if (data && data.token) {
@@ -99,6 +111,12 @@ export default class Index extends wepy.page {
   }
 
   async onReady() {}
+
+  async fetchTemplateMsgToken() {
+    const { data } = await getAccessToken();
+
+    storageTemplateMsgToken(data);
+  }
 
   redirect() {
     wx.switchTab({

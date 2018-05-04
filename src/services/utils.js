@@ -23,3 +23,11 @@ export const validateDateRange = (start, end, format) => {
 
 // graphql
 export const safePluckQueryResult = prop => res => !res.data.data ? null : res.data.data[prop]
+
+// token
+export function checkTokenExpired(token) {
+  const { expires_in, timestamp } = token
+  const now = Number.parseInt(Date.now() / 1000)
+
+  return now > timestamp + expires_in
+}

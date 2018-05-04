@@ -100,34 +100,36 @@ export default class extends wepy.app {
     this.intercept('request', {
       // 发出请求时的回调函数
       config(p) {
-        const { type } = p
-
-        switch (type) {
-          case 'query':
-            p.url = `${this.service.graphql}/query`
-            break
-          case 'mutation':
-            p.url = `${this.service.graphql}/mutation`
-            break
-          default:
-            break
-        }
-
-        const { token } = retrieveUserTokenSync()
-
-        if (!p.noAuth) {
-          p.header = {
-            'Authorization': `Bearer ${token}`
+        if (p.type) {
+          switch (p.type) {
+            case 'query':
+              p.url = `${this.service.graphql}/query`
+              break
+            case 'mutation':
+              p.url = `${this.service.graphql}/mutation`
+              break
+            default:
+              break
           }
+
+          const { token } = retrieveUserTokenSync()
+
+          if (!p.noAuth) {
+            p.header = {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+          p.method = 'POST'
+
+          console.group(p.data)
+
+          wx.showLoading({
+            title: '加载中...',
+            mask: true
+          })
+        } else {
+          p.url = `${APP_HOST}/wx${p.url}`
         }
-        p.method = 'POST'
-
-        console.group(p.data)
-
-        wx.showLoading({
-          title: '加载中...',
-          mask: true
-        })
 
         return p;
       },

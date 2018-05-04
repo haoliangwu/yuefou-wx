@@ -26,7 +26,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'space-before-function-paren': 0,
     'semi': ["off", "never"],
-    'no-unused-vars': ["warn"]
+    'no-unused-vars': ["warn"],
+    'camelcase': ["off", "never"]
   },
   "globals": {
     "wx": true,

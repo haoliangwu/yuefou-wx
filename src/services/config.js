@@ -11,6 +11,7 @@ export const CosConfigFragment = `fragment CosConfigFragment on CosConfig {
 export function appConfig() {
   const query = `query appConfigQuery {
     config {
+      env
       cos {
         ...CosConfigFragment
       }
